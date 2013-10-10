@@ -19,6 +19,8 @@ if ! test "$(basename -- "$0")" = "bash"; then
     exit 1
 fi
 
+# NB! No exit after, only return
+
 profile="${1:-}"
 config_file=$(echo "${2:-${AWS_CONFIG_FILE:-~/.aws/config}}" | sed "s:~:$HOME:" );
 
@@ -37,8 +39,9 @@ updated=0
 if [ -z $profile ]; then
     default_profile=$AWS_DEFAULT_PROFILE
 elif [[ "-" = $profile ]]; then
-    default_profile=""
-    updated=2
+    updated=3 # turn off
+elif [[ "+" = $profile ]]; then
+    updated=2 # reset default
 else 
     for name in ${profiles[@]}; do
         if [[ "x$name" = "x$profile" ]]; then
@@ -54,14 +57,28 @@ else
     fi
 fi
 
-export AWS_CONFIG_FILE=$config_file
-export AWS_DEFAULT_PROFILE=$default_profile
+if [[ -z $AWS_CONFIG_FILE && $updated -ne 3 ]]; then
+    echo -e "${g}AWS support was successfully switched on${x}"
+fi
 
 if [ $updated -eq 1 ]; then
+    export AWS_CONFIG_FILE=$config_file
+    export AWS_DEFAULT_PROFILE=$default_profile
+
     echo -e "${g}Profile was successfully switched${x}"
 elif [ $updated -eq 2 ]; then
+    export AWS_CONFIG_FILE=$config_file
+    unset AWS_DEFAULT_PROFILE
+
     echo -e "${y}Profile was successfully reset${x}"
+elif [ $updated -eq 3 ]; then
+    unset AWS_CONFIG_FILE
+    unset AWS_DEFAULT_PROFILE
+
+    echo -e "${y}AWS support was successfully switched off${x}"
 else
+    export AWS_CONFIG_FILE=$config_file
+
     cat <<EOL
 
 AWS_DEFAULT_PROFILE  : ${AWS_DEFAULT_PROFILE:-default}

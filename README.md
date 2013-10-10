@@ -15,7 +15,7 @@ For more details, please refer to [aws.amazon.com/cli](http://aws.amazon.com/cli
 
 TODO:
 
-1. create installer
+1. fix installer
 2. replace php parse ini with awk 
 
 
@@ -28,7 +28,12 @@ Install AWS CLI Tools:
 	
 Install aws-profile:
 
-	$ cp aws-profile aws-wrapper /usr/local/bin
+	$ curl -sS https://raw.github.com/jaymecd/aws-profile/master/install.sh | sh
+	
+Or via clone:
+
+	$ git clone https://github.com/jaymecd/aws-profile.git
+	$ cp aws-profile/aws-* /usr/local/bin
 	
 Update resource file
 ---
@@ -77,9 +82,17 @@ Output explained:
 Switch between profiles
 ---
 	
-To switch aws profile, run command:
+To switch aws profile to *secret-project*, run command:
 
 	$ aws-profile secret-project
+	
+To reset back to default, run command:
+
+	$ aws-profile +
+	
+To switch aws profiles off, run command:
+
+	$ aws-profile -
 	
 Run AWS commands:
 ---
