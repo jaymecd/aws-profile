@@ -66,7 +66,7 @@ To list profiles, run command without arguments:
 	
 Output explained:
 
-	AWS_DEFAULT_PROFILE  : ~                         <-- Current profile
+	AWS_DEFAULT_PROFILE  : default                   <-- Current profile
 	AWS_CONFIG_FILE      : /Users/nick/.aws/config   <-- Config file
 	AWS_DEFAULT_REGION   : ~                         <-- Default region, if set
 	AWS_DEFAULT_OUTPUT   : ~                         <-- Default output, if set
