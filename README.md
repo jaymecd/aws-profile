@@ -16,7 +16,7 @@ For more details, please refer to [aws.amazon.com/cli](http://aws.amazon.com/cli
 TODO:
 
 1. create installer
-2. ...
+2. replace php parse ini with awk 
 
 
 Installation
