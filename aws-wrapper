@@ -1,4 +1,12 @@
 #!/bin/bash
+#
+# This file is part of the aws-profile package.
+#
+# (c) Nikolai Zujev <nikolai.zujev@gmail.com>
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+#
 
 r="\033[0;31m" # red
 w="\033[0;37m" # white

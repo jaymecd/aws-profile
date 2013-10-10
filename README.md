@@ -103,10 +103,10 @@ Bash PS1 prompt hint:
 Update `.profile` or `.bashrc` with following code:
 
 	function __ps_aws() {
-	    echo '$([ $AWS_CONFIG_FILE ] && echo " (aws ${AWS_DEFAULT_PROFILE:-default})")'
+	    [ $AWS_CONFIG_FILE ] && echo " (aws ${AWS_DEFAULT_PROFILE:-default})"
 	}
 	
-	export PS1="\u@\h:\w$(__ps_aws) \$ "
+	export PS1="\u@\h:\w\$(__ps_aws) \$ "
 	
 And it will looks something like that:
 	
