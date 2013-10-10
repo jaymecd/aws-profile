@@ -1,7 +1,7 @@
 aws-switch
 ==========
 
-*Make AWS CLI profile switch easy.*
+*Make AWS CLI profile switch easy, while working with many accounts.*
 
 ---
 
@@ -12,6 +12,12 @@ Java-based version is not supported.
 For more details, please refer to [aws.amazon.com/cli](http://aws.amazon.com/cli/)
 
 *Note: script was tested only in Bash* 
+
+TODO:
+
+1. create installer
+2. ...
+
 
 Installation
 ---
