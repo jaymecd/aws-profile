@@ -50,12 +50,11 @@ export AWS_CONFIG_FILE=$config_file
 export AWS_DEFAULT_PROFILE=$default_profile
 
 if [ $updated -eq 1 ]; then
-    echo -e "${w}aws-switch:${g} profile switched${x}"
+    echo -e "${g}Profile was successfully switched${x}"
 elif [ $updated -eq 2 ]; then
-    echo -e "${w}aws-switch:${y} profile reset${x}"
-fi
-
-cat <<EOL
+    echo -e "${y}Profile was successfully reset${x}"
+else
+    cat <<EOL
 
 AWS_DEFAULT_PROFILE  : ${AWS_DEFAULT_PROFILE:-default}
 AWS_CONFIG_FILE      : ${AWS_CONFIG_FILE:-~}
@@ -65,5 +64,6 @@ AWS_DEFAULT_OUTPUT   : ${AWS_DEFAULT_OUTPUT:-~}
 Configured profiles  : ${profiles[@]:-~}
 
 EOL
+fi
 
 unset config_file default_profile profiles profile name r g y w h x
