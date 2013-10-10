@@ -1,0 +1,16 @@
+#!/bin/bash
+
+r="\033[0;31m" # red
+w="\033[0;37m" # white
+g="\033[0;32m" # green
+y="\033[1;33m" # yellow
+x="\033[0m" # reset
+
+if [[ -z $AWS_CONFIG_FILE ]]; then
+    echo -e "${r}ERROR:${x} Env AWS_CONFIG_FILE must be set" >&2
+    exit 1
+fi
+
+echo -e "${w}NB!${x} Running ${g}AWS CLI Tools${x} with ${y}${AWS_DEFAULT_PROFILE:-default}${x} profile." >&2
+
+aws "$@"

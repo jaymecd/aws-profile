@@ -1,11 +1,11 @@
-aws-switch
+aws-profile
 ==========
 
 *Make AWS CLI profile switch easy, while working with many accounts.*
 
 ---
 
-**NB!** *aws-switch* works **only** with Amazon AWSCLI (Python) package.
+**NB!** *aws-profile* works **only** with Amazon AWSCLI (Python) package.
 
 Java-based version is not supported.
 
@@ -26,9 +26,9 @@ Install AWS CLI Tools:
 
 	$ pip install awscli
 	
-Install aws-switch:
+Install aws-profile:
 
-	$ cp aws-switch aws-exec /usr/local/bin
+	$ cp aws-profile aws-wrapper /usr/local/bin
 	
 Update resource file
 ---
@@ -39,8 +39,10 @@ Add following lines to `~/.profile` or `~/.bashrc` file:
 
 	# Amazon AWS Service CLI
 	complete -C aws_completer aws
-	alias aws-switch="source aws-switch"
-	alias aws="aws-exec"
+	alias aws-profile="source aws-profile"
+	alias aws="aws-wrapper"
+
+*Note: alias for **aws-profile** is required for transparent work, otherwise its requires to call via source manually, cause there is now way to expose environment variables back to parent.*
 
 Setup config
 ---
@@ -59,9 +61,9 @@ Populate config `~/.aws/config` with desired profiles (refer AWS manual):
 Overview profile
 ---
 
-To list profiles, run command:
+To list profiles, run command without arguments:
 
-	$ aws-switch
+	$ aws-profile
 	
 Output explained:
 
@@ -77,7 +79,7 @@ Switch between profiles
 	
 To switch aws profile, run command:
 
-	$ aws-switch secret-project
+	$ aws-profile secret-project
 	
 Run AWS commands:
 ---
@@ -93,7 +95,22 @@ Which gives output like:
 	274082975067	r-8bebfdc4	226008221399
 	… SOME OTHER DATA … 
 	
-P.S. console autocomplete still works like a charm.
+P.S. console autocomplete still works like a charm. Try `aws TABTAB`
+
+Bash PS1 prompt hint:
+---
+
+Update `.profile` or `.bashrc` with following code:
+
+	function __ps_aws() {
+	    echo '$([ $AWS_CONFIG_FILE ] && echo " (aws ${AWS_DEFAULT_PROFILE:-default})")'
+	}
+	
+	export PS1="\u@\h:\w$(__ps_aws) \$ "
+	
+And it will looks something like that:
+	
+	nick@domain:~ (aws secret-project) $ _
 
 ---
 
