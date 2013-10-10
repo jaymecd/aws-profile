@@ -7,17 +7,11 @@ aws-profile
 
 **NB!** *aws-profile* works **only** with Amazon AWSCLI (Python) package.
 
-Java-based version is not supported.
+Java-based version is not supported (for now).
 
 For more details, please refer to [aws.amazon.com/cli](http://aws.amazon.com/cli/)
 
 *Note: script was tested only in Bash* 
-
-TODO:
-
-1. fix installer
-2. replace php parse ini with awk 
-
 
 Installation
 ---
