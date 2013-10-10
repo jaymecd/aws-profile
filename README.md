@@ -35,6 +35,8 @@ Update resource file
 
 Add following lines to `~/.profile` or `~/.bashrc` file:
 
+	export PATH="/usr/local/bin:$PATH"
+
 	# Amazon AWS Service CLI
 	complete -C aws_completer aws
 	alias aws-switch="source aws-switch"
