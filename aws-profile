@@ -25,12 +25,25 @@ profile="${1:-}"
 config_file=$(echo "${2:-${AWS_CONFIG_FILE:-~/.aws/config}}" | sed "s:~:$HOME:" );
 
 export config_file
+export profile_name=${profile:-$AWS_DEFAULT_PROFILE}
 
 profiles=($(php -r "$(cat <<"EOL"
     $file = getenv('config_file');
     $list = array_keys(array_filter((array) @parse_ini_file($file, true)));
     $list = array_map(function($x) {return preg_replace('/^profile\s+/','',$x);}, $list );
     echo $list ? implode(PHP_EOL, $list).PHP_EOL : null;
+EOL
+)"))
+
+profile_data=($(php -r "$(cat <<"EOL"
+    $name = getenv('profile_name');
+    $file = getenv('config_file');
+    $list = array_filter((array) @parse_ini_file($file, true));
+    $keys = array_keys($list);
+    $vals = array_values($list);
+    $keys = array_map(function($x) {return preg_replace('/^profile\s+/','',$x);}, $keys);
+    $key = array_search($name, $keys, true);
+    echo (false === $key) ? null : implode(PHP_EOL, array($vals[$key]['aws_access_key_id'], $vals[$key]['aws_secret_access_key']));
 EOL
 )"))
 
@@ -61,6 +74,11 @@ if [[ -z $AWS_CONFIG_FILE && $updated -ne 3 ]]; then
     echo -e "${g}AWS support was successfully switched on${x}"
 fi
 
+export AWS_ACCESS_KEY="${profile_data[0]}"
+export AWS_ACCESS_KEY_ID="${profile_data[0]}"
+export AWS_SECRET_KEY="${profile_data[1]}"
+export AWS_SECRET_ACCESS_KEY="${profile_data[1]}"
+
 if [ $updated -eq 1 ]; then
     export AWS_CONFIG_FILE=$config_file
     export AWS_DEFAULT_PROFILE=$default_profile
@@ -72,8 +90,9 @@ elif [ $updated -eq 2 ]; then
 
     echo -e "${y}Profile was successfully reset${x}"
 elif [ $updated -eq 3 ]; then
-    unset AWS_CONFIG_FILE
-    unset AWS_DEFAULT_PROFILE
+    unset AWS_CONFIG_FILE AWS_DEFAULT_PROFILE
+    unset AWS_ACCESS_KEY AWS_ACCESS_KEY_ID
+    unset AWS_SECRET_KEY AWS_SECRET_ACCESS_KEY
 
     echo -e "${y}AWS support was successfully switched off${x}"
 else
@@ -91,4 +110,4 @@ Configured profiles  : ${profiles[@]:-~}
 EOL
 fi
 
-unset config_file default_profile profiles profile name r g y w h x
+unset config_file default_profile profiles profile profile_data profile_name name r g y w h x
