@@ -4,7 +4,7 @@ REPOSITORY="https://raw.github.com/jaymecd/aws-profile/master"
 DST_PATH=/usr/local/bin
 
 for F in aws-profile aws-wrapper; do
-    curl -sS "${REPOSITORY}/$F" > "${DST_PATH}/$F"
+    curl -sSL "${REPOSITORY}/$F" > "${DST_PATH}/$F"
     chmod +x "${DST_PATH}/$F"
 done
 
