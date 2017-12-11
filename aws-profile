@@ -27,7 +27,7 @@ unset _caller
 
 profile="${1:-}"
 config_file=$(echo "${2:-${AWS_CONFIG_FILE:-~/.aws/config}}" | sed "s:~:$HOME:" );
-credentials_file=$(echo "${2:-${AWS_CONFIG_FILE:-~/.aws/credentials}}" | sed "s:~:$HOME:" );
+credentials_file=$(echo "~/.aws/credentials" | sed "s:~:$HOME:" );
 
 export config_file
 export credentials_file
