@@ -27,8 +27,10 @@ unset _caller
 
 profile="${1:-}"
 config_file=$(echo "${2:-${AWS_CONFIG_FILE:-~/.aws/config}}" | sed "s:~:$HOME:" );
+credentials_file=$(echo "~/.aws/credentials" | sed "s:~:$HOME:" );
 
 export config_file
+export credentials_file
 export profile_name=${profile:-$AWS_DEFAULT_PROFILE}
 
 profiles=($(php -r "$(cat <<"EOL"
@@ -43,6 +45,12 @@ profile_data=($(php -r "$(cat <<"EOL"
     $name = getenv('profile_name');
     $file = getenv('config_file');
     $list = array_filter((array) @parse_ini_file($file, true));
+    $file = getenv('credentials_file');
+    $creds = array_filter((array)@parse_ini_file($file, true));
+    array_walk($list, function(&$a, $b) use ($creds) {
+        $p = str_replace('profile ', '', $b);
+        $a = array_merge($a, isset($creds[$p]) ? $creds[$p] : []);
+    });
     $keys = array_keys($list);
     $vals = array_values($list);
     $keys = array_map(function($x) {return preg_replace('/^profile\s+/','',$x);}, $keys);
@@ -78,6 +86,7 @@ if [[ -z $AWS_CONFIG_FILE && $updated -ne 3 ]]; then
     echo -e "${g}AWS support was successfully switched on${x}"
 fi
 
+export AWS_PROFILE="${profile_name}"
 export AWS_ACCESS_KEY="${profile_data[0]}"
 export AWS_ACCESS_KEY_ID="${profile_data[0]}"
 export AWS_SECRET_KEY="${profile_data[1]}"
@@ -114,4 +123,4 @@ Configured profiles  : ${profiles[@]:-~}
 EOL
 fi
 
-unset config_file default_profile profiles profile profile_data profile_name name r g y w h x
+unset config_file credentials_file default_profile profiles profile profile_data profile_name name r g y w h x
