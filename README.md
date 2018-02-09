@@ -2,6 +2,7 @@ aws-profile
 ==========
 
 *Make AWS CLI profile switch easy, while working with many accounts.*
+*The bash exporter is really useful to avoid running commands in the wrong account*
 
 ---
 
@@ -19,14 +20,15 @@ Installation
 Install AWS CLI Tools:
 
 	$ pip install awscli
+	$ sudo apt-get install php5-cli
 	
 Install aws-profile:
 
-	$ curl -sSL https://raw.github.com/jaymecd/aws-profile/master/install.sh | sh
+	$ curl -sSL https://raw.github.com/Home24/aws-profile/master/install.sh | sh
 	
 Or via clone:
 
-	$ git clone https://github.com/jaymecd/aws-profile.git
+	$ git clone https://github.com/Home24/aws-profile.git
 	$ cp aws-profile/aws-* /usr/local/bin
 	
 Update resource file
@@ -45,7 +47,7 @@ Add following lines to `~/.profile` or `~/.bashrc` file:
 
 Setup config
 ---
-Populate config `~/.aws/config` with desired profiles (refer AWS manual): 
+Populate config `~/.aws/credentials` with desired profiles (refer AWS manual): 
 
 	[profile secret-project]
 	aws_access_key_id=SOME-ACCESS-KEY-1
@@ -67,7 +69,7 @@ To list profiles, run command without arguments:
 Output explained:
 
 	AWS_DEFAULT_PROFILE  : default                   <-- Current profile
-	AWS_CONFIG_FILE      : /Users/nick/.aws/config   <-- Config file
+	AWS_CONFIG_FILE      : /Users/nick/.aws/credentials   <-- Config file
 	AWS_DEFAULT_REGION   : ~                         <-- Default region, if set
 	AWS_DEFAULT_OUTPUT   : ~                         <-- Default output, if set
 	
