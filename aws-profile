@@ -26,7 +26,7 @@ unset _caller
 # NB! No exit after, only return
 
 profile="${1:-}"
-config_file=$(echo "${2:-${AWS_CONFIG_FILE:-~/.aws/config}}" | sed "s:~:$HOME:" );
+config_file=$(echo "${2:-${AWS_CONFIG_FILE:-~/.aws/credentials}}" | sed "s:~:$HOME:" );
 
 export config_file
 export profile_name=${profile:-$AWS_DEFAULT_PROFILE}
@@ -47,7 +47,7 @@ profile_data=($(php -r "$(cat <<"EOL"
     $vals = array_values($list);
     $keys = array_map(function($x) {return preg_replace('/^profile\s+/','',$x);}, $keys);
     $key = array_search($name, $keys, true);
-    echo (false === $key) ? null : implode(PHP_EOL, array($vals[$key]['aws_access_key_id'], $vals[$key]['aws_secret_access_key']));
+    echo (false === $key) ? null : implode(PHP_EOL, array($vals[$key]['aws_access_key_id'], $vals[$key]['aws_secret_access_key'], $vals[$key]['aws_session_token']));
 EOL
 )"))
 
@@ -82,6 +82,9 @@ export AWS_ACCESS_KEY="${profile_data[0]}"
 export AWS_ACCESS_KEY_ID="${profile_data[0]}"
 export AWS_SECRET_KEY="${profile_data[1]}"
 export AWS_SECRET_ACCESS_KEY="${profile_data[1]}"
+export AWS_SESSION_TOKEN="${profile_data[2]}"
+
+echo -e "${g}Exported ENV ${profile} variables${x}"
 
 if [ $updated -eq 1 ]; then
     export AWS_CONFIG_FILE=$config_file
